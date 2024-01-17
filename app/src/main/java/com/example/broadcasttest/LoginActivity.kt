@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import java.io.BufferedReader
@@ -22,11 +23,29 @@ class LoginActivity : BaseActivity() {
         val login = findViewById<Button>(R.id.login)
         accountEdit = findViewById(R.id.accountEdit)
         passwordEdit = findViewById(R.id.passwordEdit)
-
+        val prefs = getPreferences(Context.MODE_PRIVATE)
+        val isRemember = prefs.getBoolean("remember_password", false)
+        if (isRemember) {
+//            将账号和密码设置到文本框中
+            val account = prefs.getString("account", "")
+            val password = prefs.getString("password", "")
+            accountEdit.setText(account)
+            passwordEdit.setText(password)
+        }
         login.setOnClickListener {
             val account = accountEdit.text.toString()
             val password = passwordEdit.text.toString()
+            val remember = findViewById<CheckBox>(R.id.rememberPassword)
             if (account == "admin" && password == "123456") {
+                val editor = prefs.edit()
+                if (remember.isChecked) {
+                    editor.putBoolean("remember_password", true)
+                    editor.putString("account", account)
+                    editor.putString("password", password)
+                } else {
+                    editor.clear()
+                }
+                editor.apply()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -34,7 +53,12 @@ class LoginActivity : BaseActivity() {
                 Toast.makeText(this, "account or password is invalid", Toast.LENGTH_SHORT).show()
             }
         }
-//        用户名输入完成
+
+    }
+
+    //   @Deprecated
+    private fun onAccountDone() {
+        //        用户名输入完成
         accountEdit.setOnFocusChangeListener { v, hasFocus ->
             Log.d("TAG", "用户名输入完成 $hasFocus ${passwordEdit.text.toString()}")
             if (!hasFocus && passwordEdit.text.toString().isEmpty()) {
@@ -55,6 +79,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    //   @Deprecated
     private fun load(): String {
         val content = StringBuilder()
         try {
@@ -71,6 +96,7 @@ class LoginActivity : BaseActivity() {
         return content.toString()
     }
 
+    //   @Deprecated
     private fun save(inputText: String) {
         try {
             val output = openFileOutput("data", Context.MODE_PRIVATE)
@@ -82,12 +108,5 @@ class LoginActivity : BaseActivity() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val accountText = accountEdit.text.toString()
-        val passwordText = passwordEdit.text.toString()
-        save("${accountText}:$passwordText")
     }
 }
