@@ -24,7 +24,9 @@ class LoginActivity : BaseActivity() {
         accountEdit = findViewById(R.id.accountEdit)
         passwordEdit = findViewById(R.id.passwordEdit)
         val prefs = getPreferences(Context.MODE_PRIVATE)
+        val remember = findViewById<CheckBox>(R.id.rememberPassword)
         val isRemember = prefs.getBoolean("remember_password", false)
+        remember.isChecked = isRemember
         if (isRemember) {
 //            将账号和密码设置到文本框中
             val account = prefs.getString("account", "")
@@ -35,7 +37,6 @@ class LoginActivity : BaseActivity() {
         login.setOnClickListener {
             val account = accountEdit.text.toString()
             val password = passwordEdit.text.toString()
-            val remember = findViewById<CheckBox>(R.id.rememberPassword)
             if (account == "admin" && password == "123456") {
                 val editor = prefs.edit()
                 if (remember.isChecked) {
