@@ -26,5 +26,23 @@
         android:id="@+id/addData"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:text="createDatabase" />
+        android:text="add data" />
+
+    <Button
+        android:id="@+id/updateData"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="update data" />
+
+    <Button
+        android:id="@+id/deleteData"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="delete data" />
+
+    <Button
+        android:id="@+id/queryData"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="query data" />
 </LinearLayout>

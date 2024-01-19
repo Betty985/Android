@@ -11,6 +11,7 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
             "id integer primary key autoincrement," +
             "author text," +
             "price real," +
+            "pages integer," +
             "name text)"
     private val createCategory = "create table Category(" +
             "id integer primary key autoincrement," +
@@ -27,6 +28,7 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
 //       如果在创建表时发现已经存在就会报错
         db.execSQL("drop table if exists Book")
         db.execSQL("drop table if exists Category")
+        context.deleteDatabase("Book.db")
         onCreate(db)
     }
 
