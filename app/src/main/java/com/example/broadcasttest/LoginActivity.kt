@@ -40,9 +40,11 @@ class LoginActivity : BaseActivity() {
             if (account == "admin" && password == "123456") {
                 val editor = prefs.edit()
                 if (remember.isChecked) {
-                    editor.putBoolean("remember_password", true)
-                    editor.putString("account", account)
-                    editor.putString("password", password)
+                    prefs.open {
+                        putBoolean("remember_password", true)
+                        putString("account", account)
+                        putString("password", password)
+                    }
                 } else {
                     editor.clear()
                 }

@@ -7,6 +7,8 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
 必须在AndroidManifest.xml文件中进行权限声明，否则程序将会直接崩溃。
     -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
         android:theme="@style/Theme.BroadcastTest"
         tools:targetApi="31">
         <activity
-            android:name=".LoginActivity"
+            android:name=".ContactsActivity"
             android:exported="true">
             <intent-filter>
                 <!-- 表示这个Activity是应用的入口 -->
@@ -28,6 +30,9 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"></activity>
 
         <receiver
             android:name=".AnotherBroadcastReceiver"
@@ -56,7 +61,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
 
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
