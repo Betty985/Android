@@ -42,4 +42,11 @@ ContentProvider的用法一般有两种：使用现有的ContentProvider读取�
 
 ContentResolver中的增删改查方法都是不接收表名参数的，而是使用一个Uri参数代替。这个参数被称为内容URI。内容URI给ContentProvider中的数据建立了唯一标识符，它主要由两部
 分组成：authority和path。
-authority是用于对不同的应用程序做区分的，一般为避免冲突，会采用应用包名的方式进行命名。path则是用于对同一应用程序中不同的表做区分的，通常会添加到authority的后面。为辨认内容URI还需要在字符串的头部加上协议声明。
+authority是用于对不同的应用程序做区分的，一般为避免冲突，会采用应用包名的方式进行命名。
+path则是用于对同一应用程序中不同的表做区分的，通常会添加到authority的后面。为辨认内容URI还需要在字符串的头部加上协议声明。
+`*`表示匹配任意长度的任意字符，`#`表示匹配任意长度的数字。
+
+`getType()`方法是所有ContentProvider都必须提供的一个方法，用于获取Uri对象所对应的MIME类型。一个内容URI所对应的MIME字符串主要由3部分组成，
+- 必须以`vnd`开头
+- 如果内容URI以路径结尾，则后接`android.cursor.dir/`；如果内容URI以id结尾，则后接`android.cursor.item/`
+- 最后接上`vnd.<authority>.<path>`

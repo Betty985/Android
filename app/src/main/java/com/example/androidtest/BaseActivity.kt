@@ -1,4 +1,4 @@
-package com.example.broadcasttest
+package com.example.androidtest
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -37,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val intentFilter = IntentFilter()
-        intentFilter.addAction("com.example.broadcasttest.FORCE_OFFLINE")
+        intentFilter.addAction("com.example.androidtest.FORCE_OFFLINE")
         receiver = ForceOfflineReceiver()
         registerReceiver(receiver, intentFilter)
     }

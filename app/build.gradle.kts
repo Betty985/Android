@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.broadcasttest"
+    namespace = "com.example.androidtest"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.broadcasttest"
+        applicationId = "com.example.androidtest"
         minSdk = 25
         targetSdk = 33
         versionCode = 1

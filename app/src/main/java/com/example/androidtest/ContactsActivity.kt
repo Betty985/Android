@@ -1,4 +1,4 @@
-package com.example.broadcasttest
+package com.example.androidtest
 
 import android.Manifest
 import android.content.pm.PackageManager

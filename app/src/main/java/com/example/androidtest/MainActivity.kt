@@ -1,4 +1,4 @@
-package com.example.broadcasttest
+package com.example.androidtest
 
 import android.content.BroadcastReceiver
 import android.content.ContentValues
@@ -172,7 +172,7 @@ class MainActivity : BaseActivity() {
         }
         val forceOffline = findViewById<Button>(R.id.forceOffline)
         forceOffline.setOnClickListener {
-            val intent = Intent("com.example.broadcasttest.FORCE_OFFLINE")
+            val intent = Intent("com.example.androidtest.FORCE_OFFLINE")
             sendBroadcast(intent)
         }
         crud()
