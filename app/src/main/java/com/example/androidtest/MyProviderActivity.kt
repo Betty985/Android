@@ -32,33 +32,44 @@ class MyProviderActivity : AppCompatActivity() {
             val newUri = contentResolver.insert(uri, values)
             bookId = newUri?.pathSegments?.get(1)
         }
-        queryData.setOnClickListener{
-            val uri=Uri.parse("content://com.example.androidtest.provider/book")
-            contentResolver.query(uri,null,null,null,null)?.apply {
-                while (moveToNext()){
-                    val name=getString(getColumnIndex("name"))
-                    val author=getString(getColumnIndex("author"))
-                    val pages=getString(getColumnIndex("pages"))
-                    val price=getString(getColumnIndex("price"))
-                    Log.d("MyProviderActivity","book name is $name")
-                    Log.d("MyProviderActivity","book name is $author")
-                    Log.d("MyProviderActivity","book name is $pages")
-                    Log.d("MyProviderActivity","book name is $price")
+        queryData.setOnClickListener {
+            val uri = Uri.parse("content://com.example.androidtest.provider/book")
+            contentResolver.query(uri, null, null, null, null)?.apply {
+                val nameIndex = getColumnIndex("name")
+                val authorIndex = getColumnIndex("author")
+                val pagesIndex = getColumnIndex("pages")
+                val priceIndex = getColumnIndex("price")
+
+                while (moveToNext()) {
+                    val name = if (nameIndex != -1) getString(nameIndex) else null
+                    val author = if (authorIndex != -1) getString(authorIndex) else null
+                    val pages = if (pagesIndex != -1) getString(pagesIndex) else null
+                    val price = if (priceIndex != -1) getString(priceIndex) else null
+
+                    Log.d("MyProviderActivity", "book name is $name")
+                    Log.d("MyProviderActivity", "book author is $author")
+                    Log.d("MyProviderActivity", "book pages is $pages")
+                    Log.d("MyProviderActivity", "book price is $price")
                 }
                 close()
             }
+
         }
-        updateData.setOnClickListener{
+        updateData.setOnClickListener {
             bookId?.let {
-                val uri=Uri.parse("content://com.example.androidtest.provider/book/$it")
-                val values= contentValuesOf("name" to "A Storm of Swords","pages" to 1216,"price" to 24.05)
-                contentResolver.update(uri,values,null,null)
+                val uri = Uri.parse("content://com.example.androidtest.provider/book/$it")
+                val values = contentValuesOf(
+                    "name" to "A Storm of Swords",
+                    "pages" to 1216,
+                    "price" to 24.05
+                )
+                contentResolver.update(uri, values, null, null)
             }
         }
-        deleteData.setOnClickListener{
+        deleteData.setOnClickListener {
             bookId?.let {
-                val uri=Uri.parse("content://com.example.androidtest.provider/book/$it")
-                contentResolver.delete(uri,null,null)
+                val uri = Uri.parse("content://com.example.androidtest.provider/book/$it")
+                contentResolver.delete(uri, null, null)
             }
         }
     }
