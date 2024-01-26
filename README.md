@@ -74,4 +74,6 @@ Android 8.0引入了通知渠道这个概念，每条通知属于一个对应的
 
 当你点击按钮时，Activity 已经处于 RESUMED 状态，此时再调用 registerForActivityResult 就会违反其使用规则，因此会抛出 IllegalStateException 异常
 ```
+# other
+`.gitignore` 文件的更改需要在添加文件到暂存区之前生效。
 
