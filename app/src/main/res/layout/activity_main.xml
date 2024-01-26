@@ -1,54 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/makeCall"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Make Call" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/forceOffline"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="Send force offline broadcast" />
+        <Button
+            android:id="@+id/makeCall"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Make Call" />
 
-    <Button
-        android:id="@+id/createDatabase"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="createDatabase" />
+        <Button
+            android:id="@+id/forceOffline"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Send force offline broadcast" />
 
-    <Button
-        android:id="@+id/addData"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="add data" />
+        <Button
+            android:id="@+id/createDatabase"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="createDatabase" />
 
-    <Button
-        android:id="@+id/updateData"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="update data" />
+        <Button
+            android:id="@+id/addData"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="add 增加数据data" />
 
-    <Button
-        android:id="@+id/deleteData"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="delete data" />
+        <Button
+            android:id="@+id/updateData"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="update data" />
 
-    <Button
-        android:id="@+id/queryData"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="query data" />
+        <Button
+            android:id="@+id/deleteData"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="delete data" />
 
-    <Button
-        android:id="@+id/replaceData"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="replace data" />
-</LinearLayout>
+        <Button
+            android:id="@+id/queryData"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="query data" />
+
+        <Button
+            android:id="@+id/replaceData"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="replace data" />
+
+        <Button
+            android:id="@+id/sendNotice"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="send notice" />
+    </LinearLayout>
+</ScrollView>

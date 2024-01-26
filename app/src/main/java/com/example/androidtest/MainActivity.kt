@@ -1,19 +1,25 @@
 package com.example.androidtest
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import android.Manifest
 
 @Suppress("UNUSED_EXPRESSION")
 class MainActivity : BaseActivity() {
@@ -67,8 +73,7 @@ class MainActivity : BaseActivity() {
             values.put("price", 10.99)
 //            db.update("Book", values, "name=?", arrayOf("The Da Vinci Code"))
             db.execSQL(
-                "update Book set price=? where name=?",
-                arrayOf("10.99", "The Da Vinci Code")
+                "update Book set price=? where name=?", arrayOf("10.99", "The Da Vinci Code")
             )
         }
         val deleteData = findViewById<Button>(R.id.deleteData)
@@ -84,21 +89,24 @@ class MainActivity : BaseActivity() {
 //            val cursor = db.query("Book", null, null, null, null, null, null)
             val cursor = db.rawQuery("select * from Book", null)
             if (cursor.moveToFirst()) {
-                do {
 //                    遍历Cursor对象，取出数据并打印
-                    val name = cursor.getString(cursor.getColumnIndex("name"))
-                    val author = cursor.getString(cursor.getColumnIndex("author"))
-                    val pages = cursor.getInt(cursor.getColumnIndex("pages"))
-                    val price = cursor.getDouble(cursor.getColumnIndex("price"))
-                    Log.d("MainActivity", "book name is $name")
-                    Log.d("MainActivity", "book author is $author")
-                    Log.d("MainActivity", "book pages is $pages")
-                    Log.d("MainActivity", "book price is $price")
+                do {
+                    val name = cursor.safeGetString("name")
+                    val author = cursor.safeGetString("author")
+                    val pages = cursor.safeGetInt("pages")
+                    val price = cursor.safeGetDouble("price")
+
+                    name?.let { Log.d("MainActivity", "book name is $it") }
+                    author?.let { Log.d("MainActivity", "book author is $it") }
+                    pages?.let { Log.d("MainActivity", "book pages is $it") }
+                    price?.let { Log.d("MainActivity", "book price is $it") }
                 } while (cursor.moveToNext())
             }
+
 //            避免造成内存泄露
             cursor.close()
         }
+
         val replaceData = findViewById<Button>(R.id.replaceData)
         replaceData.setOnClickListener {
             val db = dbHelper.writableDatabase
@@ -127,10 +135,51 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun sendNotice() {
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel("normal", "Normal", NotificationManager.IMPORTANCE_DEFAULT)
+            manager.createNotificationChannel(channel)
+            val channe2=NotificationChannel("important","Important",NotificationManager.IMPORTANCE_HIGH)
+            manager.createNotificationChannel(channe2)
+        }
+        val sendNotice = findViewById<Button>(R.id.sendNotice)
+        sendNotice.setOnClickListener {
+            val intent = Intent(this, ContactsActivity::class.java)
+            val pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+            val notification =
+                NotificationCompat.Builder(this, "normal").setContentTitle("This is content title")
+//                    .setContentText(
+//                        "This is content text. NotificationCompat.Builderthis,normal setContentTitle notification_bg -a " +
+//                                "android.intent.action.MAIN -c android.intent.category.LAUNCHER "
+//                    )
+//                    在通知中展示长文本
+                    .setStyle(NotificationCompat.BigTextStyle().bigText("This is content text. NotificationCompat.Builderthis,normal setContentTitle notification_bg -a " +
+                            "android.intent.action.MAIN -c android.intent.category.LAUNCHER "))
+//                    通知里展示大图片无法展示 Android版本低于16
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(
+                        BitmapFactory.decodeResource(
+                            resources,
+                            R.drawable.unsplash
+                        )
+                    ))
+                    .setSmallIcon(androidx.core.R.drawable.notification_bg).setLargeIcon(
+                        BitmapFactory.decodeResource(
+                            resources,
+                            R.drawable.unsplash
+                        )
+                    )
+                    .setContentIntent(pi)
+//                    点击通知时通知自动取消
+                    .setAutoCancel(true)
+                    .build()
+            manager.notify(1, notification)
+        }
+    }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -160,8 +209,7 @@ class MainActivity : BaseActivity() {
         val makeCall = findViewById<Button>(R.id.makeCall)
         makeCall.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CALL_PHONE
+                    this, Manifest.permission.CALL_PHONE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
 //                请求码是唯一值
@@ -176,6 +224,7 @@ class MainActivity : BaseActivity() {
             sendBroadcast(intent)
         }
         crud()
+        sendNotice()
         timeChangeReceiver = TimeChangeReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction("android.intent.action.TIME_TICK")

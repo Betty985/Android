@@ -9,6 +9,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -21,7 +22,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
         android:theme="@style/Theme.androidtest"
         tools:targetApi="31">
         <activity
-            android:name="com.example.androidtest.MyProviderActivity"
+            android:name=".CameraAlbumActivity"
             android:exported="true" >
             <intent-filter>
                 <!-- 表示这个Activity是应用的入口 -->
@@ -30,23 +31,33 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".MyProviderActivity"
+            android:exported="true" />
+        <!--          当你的应用通过 Intent 发送 URI 时，会自动授予接收 URI 的应用对这个 URI 的访问权限。-->
+      <provider
+          android:authorities="com.example.androidtest.fileprovider"
+          android:name="androidx.core.content.FileProvider"
+          android:exported="false"
+          android:grantUriPermissions="true">
+          <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+              android:resource="@xml/file_paths"/>
+      </provider>
         <provider
-            android:name="com.example.androidtest.DatabaseProvider"
+            android:name=".DatabaseProvider"
             android:authorities="com.example.androidtest.provider"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name="com.example.androidtest.ContactsActivity"
-            android:exported="true">
-        </activity>
+            android:name=".ContactsActivity"
+            android:exported="true" />
         <activity
-            android:name="com.example.androidtest.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="true" />
 
         <receiver
-            android:name="com.example.androidtest.AnotherBroadcastReceiver"
+            android:name=".AnotherBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -54,7 +65,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.example.androidtest.MyBroadcastReceiver"
+            android:name=".MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="100">
@@ -62,7 +73,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
             </intent-filter>
         </receiver> <!-- 静态注册BroadcastReceiver -->
         <receiver
-            android:name="com.example.androidtest.BootCompleteReceiver"
+            android:name=".BootCompleteReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -71,8 +82,9 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
         </receiver>
 
         <activity
-            android:name="com.example.androidtest.MainActivity"
-            android:exported="true" />
+            android:name=".MainActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

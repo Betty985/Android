@@ -1,6 +1,8 @@
 package com.example.androidtest
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -28,6 +30,9 @@ class ContactsActivity : AppCompatActivity() {
         } else {
             readContacts()
         }
+//        取消通知的方式
+//        val manager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        manager.cancel(1)
     }
 
     private fun readContacts() {

@@ -13,7 +13,10 @@ class MyProviderActivity : AppCompatActivity() {
     private lateinit var queryData: Button
     private lateinit var updateData: Button
     private lateinit var deleteData: Button
-
+//    val p by later{
+//        Log.d("TAG","run codes inside later block")
+//        null
+//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_provider)
@@ -31,6 +34,7 @@ class MyProviderActivity : AppCompatActivity() {
             )
             val newUri = contentResolver.insert(uri, values)
             bookId = newUri?.pathSegments?.get(1)
+//            println(p)
         }
         queryData.setOnClickListener {
             val uri = Uri.parse("content://com.example.androidtest.provider/book")

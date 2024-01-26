@@ -4,10 +4,24 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.database.Cursor
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+fun Cursor.safeGetString(columnName: String): String? {
+    val index = getColumnIndex(columnName)
+    return if (index != -1) getString(index) else null
+}
 
+fun Cursor.safeGetInt(columnName: String): Int? {
+    val index = getColumnIndex(columnName)
+    return if (index != -1) getInt(index) else null
+}
+
+fun Cursor.safeGetDouble(columnName: String): Double? {
+    val index = getColumnIndex(columnName)
+    return if (index != -1) getDouble(index) else null
+}
 open class BaseActivity : AppCompatActivity() {
     lateinit var receiver: ForceOfflineReceiver
 
