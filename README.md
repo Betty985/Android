@@ -81,7 +81,17 @@ Android
 `git reset HEAD`可以撤销add过的文件
 
 `git log`id查看某一条记录，-1表示想看到最后一次提交。
-
+# Service
+Service是Android中实现程序后台运行的解决方法，它非常适合那些不需要和用户交互而且还要求长期运行的任务。Service的运行不依赖于任何用户界面，即使程序被切换到后台或用户打开了另外一个应用程序，Service仍然能够保持正常运行。
+```
+ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+Android的UI操作必须在主线程（也称为UI线程）中进行。
+```
+## 异步消息处理机制
+- Message。Message是在线程之间传递的消息，它可以在内部携带少量信息，用于在不同线程之间传递数据。
+- Handler主要用于发送和处理消息。发送消息一般使用Handler的sendMessage方法等，发出的消息经过一系列地辗转处理后，最终会传递到Handler的handleMessage方法中。
+- MessageQueue主要用于存放所有通过Handler发送的消息。这部分消息会一直存在于消息队列中，等待被处理。每个线程中只会有一个MessageQueue对象。
+- Looper是每个线程中MessageQueue的管家，调用Looper的loop方法后，就会进入到一个无限循环中，每当发现MessageQueue中存在一条消息时就会将它取出，并传递到Handler的handleMessage方法中。每个线程中只会有一个Looper对象。
 # bug
 
 ```
