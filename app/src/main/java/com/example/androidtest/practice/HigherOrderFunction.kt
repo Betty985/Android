@@ -1,4 +1,4 @@
-package com.example.androidtest
+package com.example.androidtest.practice
 
 // Kotlin中的Unit大致相当于Java中的void
 fun example(func: (String, Int) -> Unit) {

@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 class AsyncTaskActivity : AppCompatActivity() {
     private lateinit var alertDialog: AlertDialog
     private lateinit var progressBar: ProgressBar
-    private val job = Job()
+    private lateinit var job :Job
 
     //    suspend 用于声明协程挂起函数
     private suspend fun download() {
@@ -50,7 +50,7 @@ class AsyncTaskActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         alertDialog.show()
-        GlobalScope.launch {
+        job = GlobalScope.launch {
             download()
         }
     }

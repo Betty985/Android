@@ -92,6 +92,74 @@ Android的UI操作必须在主线程（也称为UI线程）中进行。
 - Handler主要用于发送和处理消息。发送消息一般使用Handler的sendMessage方法等，发出的消息经过一系列地辗转处理后，最终会传递到Handler的handleMessage方法中。
 - MessageQueue主要用于存放所有通过Handler发送的消息。这部分消息会一直存在于消息队列中，等待被处理。每个线程中只会有一个MessageQueue对象。
 - Looper是每个线程中MessageQueue的管家，调用Looper的loop方法后，就会进入到一个无限循环中，每当发现MessageQueue中存在一条消息时就会将它取出，并传递到Handler的handleMessage方法中。每个线程中只会有一个Looper对象。
+# 协变和逆变
+在类型系统中，协变（Covariance）和逆变（Contravariance）是描述类型转换规则的术语。
+
+1. 协变（Covariance）：如果A是B的子类型，那么List<A>就是List<B>的子类型。在Kotlin中，使用`out`关键字表示协变，在TypeScript中，使用`extends`关键字表示协变。
+
+Kotlin示例：
+```kotlin
+interface Producer<out T> {
+    fun produce(): T
+}
+```
+TypeScript示例：
+```typescript
+interface Producer<T extends Animal> {
+    produce(): T;
+}
+```
+
+2. 逆变（Contravariance）：如果A是B的子类型，那么Consumer<B>就是Consumer<A>的子类型。在Kotlin中，使用`in`关键字表示逆变，在TypeScript中，使用`super`关键字表示逆变。
+
+Kotlin示例：
+```kotlin
+interface Consumer<in T> {
+    fun consume(item: T)
+}
+```
+TypeScript示例：
+```typescript
+interface Consumer<T super Dog> {
+    consume(item: T): void;
+}
+```
+
+注意：TypeScript中并没有直接的`super`关键字来表示逆变，上述TypeScript示例并不能在实际代码中运行，只是为了说明逆变的概念。在实际的TypeScript代码中，我们通常不需要（也不能）显式地声明逆变。
+# 类型擦除
+类型擦除是Java中的一个概念，主要是指在编译时期，Java会将泛型的类型信息擦除，只保留原始类型。
+这是因为Java在引入泛型之前已经有了大量的代码，为了保证这些代码的兼容性，Java选择了类型擦除的方式来实现泛型。
+# kotlin不存在类似js的函数声明提升
+在Kotlin中，不存在类似JavaScript中的函数声明提升（Hoisting）。
+
+在JavaScript中，函数声明提升是指无论函数在哪里声明，都会被提升到当前作用域的顶部。这意味着你可以在声明函数之前调用函数。
+
+然而，在Kotlin中，函数必须在被调用之前声明。如果你试图在声明函数之前调用函数，Kotlin编译器会报错。
+在Kotlin的Android开发中，你可能会看到一些看似存在"提升"现象的代码，比如在onCreate方法中使用了在后面定义的函数或者变量。实际上，这并不是因为Kotlin有函数提升的特性，而是因为整个Activity类的构造过程和生命周期方法的调用顺序。
+
+当一个Activity被创建时，它的构造函数和初始化块会首先被执行，然后才会调用onCreate方法。
+因此，即使你在onCreate方法中使用了在代码后面定义的函数或者变量，只要它们是在构造函数或初始化块中定义的，那么在onCreate方法被调用时，这些函数和变量已经被初始化了。
+例如：
+```kotlin
+class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // 在onCreate方法中调用在后面定义的函数
+        sayHello()
+    }
+
+    // 在onCreate方法后面定义的函数
+    fun sayHello() {
+        println("Hello, world!")
+    }
+}
+```
+在这个例子中，sayHello函数虽然在代码中位于onCreate方法后面，但是在onCreate方法被调用时，sayHello函数已经被定义了，所以这段代码可以正常运行。这并不是因为Kotlin有函数提升的特性，而是因为Activity的生命周期方法的调用顺序。
+# tips
+- [快速生成drawable](https://blog.csdn.net/m0_60352504/article/details/126392050)
 # bug
 
 ```

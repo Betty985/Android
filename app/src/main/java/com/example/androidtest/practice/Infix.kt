@@ -1,4 +1,4 @@
-package com.example.androidtest
+package com.example.androidtest.practice
 
 infix fun String.beginsWith(prefix: String) = startsWith(prefix)
 
