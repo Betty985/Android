@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidtest">
+
     <!--
 Android系统为了保护用户设备的安全和隐私，如果程序需要进行一些对用户来说比较敏感的操作，
 必须在AndroidManifest.xml文件中进行权限声明，否则程序将会直接崩溃。
@@ -22,13 +23,22 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.androidtest"
+      android:networkSecurityConfig="@xml/network_config"
         tools:targetApi="31">
+
+        <activity
+            android:name=".FruitDetailActivity"
+            android:exported="false"
+            android:theme="@style/FruitActivityTheme" />
         <activity
             android:name=".MaterialMainActivity"
             android:exported="true"
-            android:label="Fruits"
-            >
+            android:label="Fruits"></activity>
+        <activity
+            android:name=".MyNetworkActivity"
+            android:exported="true">
             <intent-filter>
+
                 <!-- 表示这个Activity是应用的入口 -->
                 <action android:name="android.intent.action.MAIN" />
                 <!-- 表示这个Activity应该被列在系统的应用启动器中 -->
@@ -36,11 +46,8 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
             </intent-filter>
         </activity>
         <activity
-            android:name=".MyNetworkActivity"
-            android:exported="true"></activity>
-        <activity
             android:name=".MyServiceActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <service
             android:name=".MyService"

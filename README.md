@@ -160,14 +160,19 @@ class MainActivity : AppCompatActivity() {
 在这个例子中，sayHello函数虽然在代码中位于onCreate方法后面，但是在onCreate方法被调用时，sayHello函数已经被定义了，所以这段代码可以正常运行。这并不是因为Kotlin有函数提升的特性，而是因为Activity的生命周期方法的调用顺序。
 # tips
 - [快速生成drawable](https://blog.csdn.net/m0_60352504/article/details/126392050)
+- CollapsingToolbarLayout只能作为AppBarLayout的直接子布局，而AppBarLayout必须是CoordinatorLayout的子布局，
 # bug
-
+## 生命周期
 ```
 在 Android 中，registerForActivityResult 是用于注册一个回调，以处理从启动的 Activity 返回的结果。这个注册过程需要在 Activity 的生命周期状态为 STARTED 之前完成，也就是在 onCreate、onStart 或 onResume 方法中进行。
 
 当你点击按钮时，Activity 已经处于 RESUMED 状态，此时再调用 registerForActivityResult 就会违反其使用规则，因此会抛出 IllegalStateException 异常
 ```
-
+## localhost请求没有发送
+```text
+localhost 是一个回环地址，指向本地设备。在你的代码中，当你在 Android 设备上运行时，localhost 实际上指的是设备本身，而不是你的服务器。
+为了解决这个问题，你需要将 localhost 替换为你服务器的实际 IP 地址或域名。确保你的设备和服务器在同一网络中，并且使用正确的 IP 地址或域名来替换 localhost。
+```
 # other
 
 `.gitignore` 文件的更改需要在添加文件到暂存区之前生效。
