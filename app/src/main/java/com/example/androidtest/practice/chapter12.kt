@@ -2,6 +2,7 @@ package com.example.androidtest.practice
 
 import android.content.Context
 import android.widget.Toast
+import com.example.androidtest.MyApplication
 import kotlin.math.max
 
 // vararg允许方法接收任意多个同等类型的参数
@@ -24,8 +25,8 @@ fun <T : Comparable<T>> max(vararg nums: T): T {
     return maxNum
 }
 // 添加扩展函数，并在里面封装弹出Toast的具体逻辑
-fun String.showToast(context: Context,duration: Int=Toast.LENGTH_SHORT){
-    Toast.makeText(context,this,duration).show()
+fun String.showToast(duration: Int=Toast.LENGTH_SHORT){
+    Toast.makeText(MyApplication.context,this,duration).show()
 }
 // 所有类型的数字都是可比较的，因此必须实现compareble接口
 fun main() {

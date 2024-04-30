@@ -102,10 +102,12 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // 在这里进行全局的初始化操作
+        context = applicationContext
     }
 
     companion object {
         private var instance: MyApplication? = null
+        lateinit var context: Context
 
         fun getContext(): Context {
             return instance!!.applicationContext

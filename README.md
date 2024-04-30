@@ -494,7 +494,100 @@ WorkManager只是一个处理定时任务的工具，它可以保证即使在应
 
 <text style="color:red;font-weight:600">国产手机上不能依赖workManager实现什么核心功能</text>
 国产手机厂商在进行Android系统定制的时候会增加一键关闭功能，允许用户一键杀死所有非白名单的应用程序。而被杀死的应用程序既无法接收广播，也无法运行WorkManager的后台任务。
+# DSL
+DSL（领域特定语言，Domain-Specific Language）是为某一特定领域、问题或任务设计的计算机程序设计语言。与通用编程语言（如Java、Python等）相比，DSL专注于特定领域，提供了更为简洁、高效的解决方案。DSL可以分为两大类：
 
+1. **内部DSL（Internal DSLs）**：这种DSL是在宿主语言（如Java、Kotlin等）中实现的，利用宿主语言的语法特性来模拟DSL。因此，内部DSL也被称为嵌入式DSL。内部DSL的优点是可以直接利用宿主语言的生态系统和工具链，但其表达能力受限于宿主语言的语法。
+
+2. **外部DSL（External DSLs）**：这种DSL拥有自定义的语法和解析器，与宿主语言独立。外部DSL需要专门的解析器来解析和执行，因此开发成本较高，但它提供了更大的灵活性和定制能力。
+
+DSL的应用非常广泛，例如：
+
+- **SQL（结构化查询语言）**：用于数据库查询的DSL。
+- **HTML（超文本标记语言）**：用于定义网页内容的DSL。
+- **CSS（层叠样式表）**：用于描述网页布局和样式的DSL。
+- **Gradle构建脚本**：基于Groovy或Kotlin的内部DSL，用于自动化构建项目。
+
+DSL的优点包括：
+
+- **提高生产效率**：DSL提供了针对特定领域的抽象，使得开发者可以更快地实现领域内的功能。
+- **提高代码的可读性**：DSL的语法通常更接近自然语言或领域专业术语，使得代码更易于理解。
+- **易于维护**：由于DSL专注于特定领域，其设计通常更为简洁，从而降低了维护成本。
+
+使用DSL时，需要权衡其带来的好处和潜在的复杂性。在某些情况下，使用通用编程语言加上良好的设计模式可能是更合适的选择。
+# tips
+## 获取全局context
+在`MyApplication`类中，通过定义`companion object`并在其中实现一个静态方法`getContext()`来获取全局的`Context`，与直接在`onCreate()`方法中通过`applicationContext`获取`Context`，本质上是为了达到相同的目的——获取一个应用级别的`Context`。但是，这两种方式在实现细节和使用场景上有所不同。
+
+### 通过`companion object`获取`Context`：
+
+```kotlin
+companion object {
+    private var instance: MyApplication? = null
+
+    fun getContext(): Context {
+        return instance!!.applicationContext
+    }
+}
+```
+
+- **实现方式**：在`MyApplication`类中定义了一个静态的`instance`变量来持有`MyApplication`的实例，并在`onCreate()`方法中对其进行初始化。`getContext()`方法通过这个`instance`变量来提供一个全局可访问的`Context`。
+- **使用场景**：这种方式允许你在应用的任何地方通过`MyApplication.getContext()`静态方法来获取`Context`，而不需要直接访问`Application`实例或传递`Context`。
+- **注意事项**：这种方式虽然方便，但需要注意避免在`MyApplication`的`instance`未被初始化之前调用`getContext()`方法，否则会引发`NullPointerException`。此外，静态持有`Context`的引用需要谨慎处理，以避免潜在的内存泄漏（虽然`Application`的`Context`通常不会导致泄漏）。
+
+### 在`onCreate()`方法中通过`applicationContext`获取`Context`：
+
+```kotlin
+override fun onCreate() {
+    super.onCreate()
+    context = applicationContext
+}
+```
+
+- **实现方式**：在`Application`的`onCreate()`方法中，通过`applicationContext`获取到应用级别的`Context`并将其存储在某个变量中。
+- **使用场景**：这种方式通常用于在`Application`类内部进行初始化操作时需要使用`Context`，例如初始化第三方库。
+- **注意事项**：由于`onCreate()`方法在`Application`生命周期的开始阶段就会被调用，因此在`onCreate()`方法之后，`applicationContext`可以安全地用于任何需要应用级别`Context`的场景。
+
+### 区别总结：
+
+- **获取方式**：通过`companion object`提供的静态方法获取`Context`更加灵活，可以在没有`Application`实例的情况下直接使用。而在`onCreate()`中获取`Context`更适合于应用启动时的初始化操作。
+- **使用场景**：如果你需要在应用的多个地方频繁地访问`Context`，使用`companion object`可能更方便。如果仅在应用启动时需要`Context`进行一些初始化设置，直接在`onCreate()`中使用`applicationContext`即可。
+- **安全性**：两种方式都是安全的，因为它们都是在获取应用级别的`Context`，不会导致内存泄漏。但是，通过`companion object`的方式需要确保正确地管理`instance`的初始化和访问，以避免`NullPointerException`。
+内存泄漏通常发生在长生命周期的对象持有短生命周期对象的引用，导致短生命周期对象无法被垃圾回收器回收。
+## `companion object`与静态属性
+在Kotlin中，`companion object`用于在类内部定义伴生对象，这允许你在没有类实例的情况下访问类内部的属性和方法，类似于Java中的静态属性和方法。然而，Kotlin本身并没有直接的`static`关键字，这是Kotlin设计者故意为之，以提供更多的灵活性和表达力。`companion object`是Kotlin提供的解决方案之一，用于实现类似静态成员的功能。
+
+### `companion object`的基本用法：
+
+```kotlin
+class MyClass {
+    companion object {
+        val staticVal = "静态属性"
+        fun staticMethod() = "静态方法"
+    }
+}
+```
+
+在这个例子中，`MyClass`有一个伴生对象，伴生对象内部定义了一个静态属性`staticVal`和一个静态方法`staticMethod()`。你可以不创建`MyClass`的实例而直接访问这些属性和方法：
+
+```kotlin
+val myVal = MyClass.staticVal
+val myMethodResult = MyClass.staticMethod()
+```
+
+### `companion object`与Java静态属性和方法的对比：
+
+- **访问方式**：在Kotlin中，通过`companion object`定义的属性和方法可以像访问静态成员一样直接通过类名访问。这与Java中的静态属性和方法访问方式相似。
+- **实现原理**：在编译时，Kotlin会将伴生对象内的属性和方法编译为外部类的静态字段和方法。因此，从Java代码中访问Kotlin的伴生对象成员时，它们就像是静态成员一样。
+- **灵活性**：与Java的静态成员相比，`companion object`更灵活。伴生对象本身可以实现接口，可以有扩展函数和属性，还可以被继承，这些都是Java静态成员所不具备的。
+
+### 注意事项：
+
+- **命名**：伴生对象可以有可选的名称，如果没有指定名称，默认名称是`Companion`。
+- **单例**：每个类只能有一个伴生对象。伴生对象本身在类加载时就被初始化，遵循单例模式。
+- **访问限制**：虽然伴生对象的成员类似于静态成员，但它们实际上仍然是实例成员。如果需要，你可以通过伴生对象的实例来访问这些成员。
+
+总的来说，`companion object`提供了一种在不创建类实例的情况下，访问类内部属性和方法的机制，同时提供了比Java静态成员更多的灵活性和功能。
 # bug
 
 ## 生命周期
