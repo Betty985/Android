@@ -29,7 +29,7 @@ class MyDatabaseHelper(val context: Context, name: String, version: Int) :
         if (oldVersion <= 1) {
             db.execSQL(createCategory)
         }
-        if(oldVersion<=2){
+        if (oldVersion <= 2) {
             db.execSQL("alter table Book add column category_id integer")
         }
 //       如果在创建表时发现已经存在就会报错

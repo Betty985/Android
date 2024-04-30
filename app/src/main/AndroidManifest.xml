@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidtest">
-
     <!--
 Android系统为了保护用户设备的安全和隐私，如果程序需要进行一些对用户来说比较敏感的操作，
 必须在AndroidManifest.xml文件中进行权限声明，否则程序将会直接崩溃。
@@ -20,22 +19,13 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.androidtest"
-      android:networkSecurityConfig="@xml/network_config"
         tools:targetApi="31">
-
         <activity
-            android:name=".FruitDetailActivity"
-            android:exported="false"
-            android:theme="@style/FruitActivityTheme" />
-        <activity
-            android:name=".MaterialMainActivity"
-            android:exported="true"
-            android:label="Fruits"></activity>
-        <activity
-            android:name=".MyNetworkActivity"
+            android:name=".MyWorkManagerActivity"
             android:exported="true">
             <intent-filter>
 
@@ -45,6 +35,21 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MyViewModelActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".FruitDetailActivity"
+            android:exported="false"
+            android:theme="@style/FruitActivityTheme" />
+        <activity
+            android:name=".MaterialMainActivity"
+            android:exported="true"
+            android:label="Fruits" />
+        <activity
+            android:name=".MyNetworkActivity"
+            android:exported="true" />
         <activity
             android:name=".MyServiceActivity"
             android:exported="true" />
