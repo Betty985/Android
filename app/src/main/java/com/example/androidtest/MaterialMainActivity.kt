@@ -2,6 +2,7 @@ package com.example.androidtest
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -80,6 +81,10 @@ class MaterialMainActivity : AppCompatActivity() {
             val index = (0 until fruits.size).random()
             fruitList.add(fruits[index])
         }
+        val person=intent.getSerializableExtra("person_data") as Person
+        val company = intent.getParcelableExtra("company_data") as? Company
+        val region =intent.getParcelableExtra("region_data") as? Region
+        Log.d("Person","get $person $company $region")
     }
 
     private fun refreshFruits(adapter: FruitAdapter) {

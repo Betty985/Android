@@ -12,7 +12,7 @@ Android系统为了保护用户设备的安全和隐私，如果程序需要进�
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- 从Android 9.0系统开始，使用前台service必须在AndroidManifest.xml中进行权限声明才行 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+<!-- 在application标签下指定初始化MyApplication类，而不是默认的Application类-->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"

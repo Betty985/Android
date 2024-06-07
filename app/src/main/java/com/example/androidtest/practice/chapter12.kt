@@ -26,7 +26,7 @@ fun <T : Comparable<T>> max(vararg nums: T): T {
 }
 // 添加扩展函数，并在里面封装弹出Toast的具体逻辑
 fun String.showToast(duration: Int=Toast.LENGTH_SHORT){
-    Toast.makeText(MyApplication.context,this,duration).show()
+    Toast.makeText(MyApplication.appContext,this,duration).show()
 }
 // 所有类型的数字都是可比较的，因此必须实现compareble接口
 fun main() {

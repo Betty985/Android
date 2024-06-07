@@ -1,5 +1,6 @@
 package com.example.androidtest
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -18,6 +19,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
 
 // service非常适合执行那些不需要和用户交互而且要求长期运行的任务。
@@ -102,20 +104,23 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // 在这里进行全局的初始化操作
-        context = applicationContext
+        appContext = applicationContext
     }
 
     companion object {
-        private var instance: MyApplication? = null
-        lateinit var context: Context
+//        如果确实需要在静态字段中持有Context，可以考虑使用WeakReference<Context>。弱引用允许垃圾回收器在需要时回收其引用的对象，这可以减少内存泄漏的风险。
+        private var instance: WeakReference<MyApplication>? = null
+        @SuppressLint("StaticFieldLeak")
+        lateinit var appContext: Context
 
         fun getContext(): Context {
-            return instance!!.applicationContext
+//            对于需要长期存储的Context引用，使用getApplicationContext()获取的Context。ApplicationContext是全局的上下文信息，它的生命周期与整个应用程序相同，因此使用它不会导致与特定Activity或Service相关的资源泄漏。
+            return instance?.get()!!.applicationContext
         }
     }
 
     init {
-        instance = this
+        instance = WeakReference(this)
     }
 }
 
