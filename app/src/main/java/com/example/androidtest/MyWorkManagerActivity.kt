@@ -94,6 +94,8 @@ class MyWorkManagerActivity : AppCompatActivity() {
             }
 //        beginWith开启一个链式任务，用then方法连接后台任务。在前一个后台任务运行成功之后，下一个后台任务才会运行。
 //        WorkManager.getInstance(this).beginWith(sync).then(compress).then(upload).enqueue()
+        LogUtils.d("LogUtils","msg")
+        LogUtils.e("LogUtils","msg")
     }
 
     private fun intentPutExtra() {
