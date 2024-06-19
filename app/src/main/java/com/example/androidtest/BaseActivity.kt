@@ -4,10 +4,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.database.Cursor
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+
 fun Cursor.safeGetString(columnName: String): String? {
     val index = getColumnIndex(columnName)
     return if (index != -1) getString(index) else null
@@ -22,8 +25,9 @@ fun Cursor.safeGetDouble(columnName: String): Double? {
     val index = getColumnIndex(columnName)
     return if (index != -1) getDouble(index) else null
 }
+
 open class BaseActivity : AppCompatActivity() {
-    lateinit var receiver: ForceOfflineReceiver
+    private lateinit var receiver: ForceOfflineReceiver
 
     inner class ForceOfflineReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
@@ -46,6 +50,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityCollector.addActivity(this)
+        isDarkTheme(this)
     }
 
     override fun onResume() {
@@ -60,6 +65,13 @@ open class BaseActivity : AppCompatActivity() {
         super.onPause()
         unregisterReceiver(receiver)
     }
+
+    private fun isDarkTheme(context: Context): Boolean {
+        val flag = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        LogUtils.d("isDARK", (flag == Configuration.UI_MODE_NIGHT_YES).toString())
+        return flag == Configuration.UI_MODE_NIGHT_YES
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         ActivityCollector.removeActivity(this)

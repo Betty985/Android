@@ -52,7 +52,7 @@ fun String.showToast(context:Context,duration: Int=Toast.LENGTH_SHORT){
     Toast.makeText(context,this,duration).show()
 }
 
-class MaterialMainActivity : AppCompatActivity() {
+class MaterialMainActivity : BaseActivity() {
     val fruits = mutableListOf(
         Fruit("Apple", R.drawable.unsplash),
         Fruit("Banana", R.drawable.unsplash)
@@ -81,7 +81,7 @@ class MaterialMainActivity : AppCompatActivity() {
             val index = (0 until fruits.size).random()
             fruitList.add(fruits[index])
         }
-        val person=intent.getSerializableExtra("person_data") as Person
+        val person=intent.getSerializableExtra("person_data") as? Person
         val company = intent.getParcelableExtra("company_data") as? Company
         val region =intent.getParcelableExtra("region_data") as? Region
         Log.d("Person","get $person $company $region")
